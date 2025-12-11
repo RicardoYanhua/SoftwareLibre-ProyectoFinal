@@ -16,28 +16,24 @@ body {
 
 :host,
 :root {
+
+    /* Permite a los navegadores usar UI nativa en light/dark */
+    color-scheme: light dark;
+
+    /* Spacing */
     --spacing: .25rem;
 
+    /* Border radius */
     --button-border-radius: 7px;
 
-    --transition-change-color-theme: 300ms;
-
-    /*color-scheme: light dark;*/
+    /* Tipografías */
     --font-10: 0.615rem;
-    /* 12px */
-
     --font-12: 0.75rem;
-    /* 12px */
-
     --font-14: 0.875rem;
-    /* 14px */
-
     --font-16: 1rem;
-    /* 16px */
-
     --font-18: 1.125rem;
-    /* 18px */
 
+    /* Grises OKLCH */
     --gray-1000: oklch(16.93% .004 285.95);
     --gray-900: oklch(19.37% .006 300.98);
     --gray-800: oklch(25.16% .008 308.11);
@@ -50,9 +46,11 @@ body {
     --gray-100: oklch(97.12% .002 325.59);
     --gray-50: oklch(98.81% 0 0);
 
+    /* Scroll */
     --scroll-thumb-bg-color: #ccc9cf;
     --scroll-thumb-bg-color-hv: #746e7c;
 
+    /* Shadows */
     --button-box-shadow:
         0px 3px 1px -2px rgba(0, 0, 0, 0.1),
         0px 2px 2px 0px rgba(0, 0, 0, 0.14),
@@ -61,9 +59,30 @@ body {
         0px 3px 3px -2px rgba(0, 0, 0, 0.1),
         0px 6px 10px 0px rgba(0, 0, 0, 0.14),
         0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+
+    /* Colores por defecto (modo automático) */
+    --c-color-secundary-1: rgb(255, 255, 255);
+    /* Light */
+    --c-color-secundary-2: rgb(220, 220, 220);
+    /* Light */
+    --color-font: rgb(0, 0, 0);
+}
+
+html.color-scheme-light {
+    color-scheme: light;
+
+    --scroll-thumb-bg-color: #ccc9cf;
+    --scroll-thumb-bg-color-hv: #746e7c;
+
+    --c-color-secundary-1: rgb(255, 255, 255);
+    --c-color-secundary-2: rgb(220, 220, 220);
+
+    --color-font: rgb(0, 0, 0);
 }
 
 html.color-scheme-dark {
+    color-scheme: dark;
+
     --scroll-thumb-bg-color: #746e7c;
     --scroll-thumb-bg-color-hv: #a39fa9;
 
@@ -71,20 +90,8 @@ html.color-scheme-dark {
     --c-color-secundary-2: rgb(84, 84, 84);
 
     --color-font: rgb(255, 255, 255);
-
 }
 
-html.color-scheme-light {
-    --scroll-thumb-bg-color: #ccc9cf;
-    --scroll-thumb-bg-color-hv: #746e7c;
-
-    --c-color-secundary-1: rgb(250, 250, 255);
-    --c-color-secundary-2: rgb(220, 220, 220);
-
-    --color-font: rgb(0, 0, 0);
-
-
-}
 
 body.color-scheme-transition {
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -112,36 +119,24 @@ svg {
     color: var(--color-font);
 }
 
-.icono-1 {
-    width: calc(var(--spacing) * 5);
-    height: calc(var(--spacing) * 5);
-}
 
-.icono-2 {
-    width: calc(var(--spacing) * 6);
-    height: calc(var(--spacing) * 6);
+[class^="icono-"] {
+  width: calc(var(--spacing) * var(--i));
+  height: calc(var(--spacing) * var(--i));
 }
-
-.icono-3 {
-    width: calc(var(--spacing) * 7);
-    height: calc(var(--spacing) * 7);
-}
-
-.icono-4 {
-    width: calc(var(--spacing) * 8);
-    height: calc(var(--spacing) * 8);
-}
+.icono-1 { --i: 5; }
+.icono-2 { --i: 6; }
+.icono-3 { --i: 7; }
+.icono-4 { --i: 8; }
 
 button {
     border: none;
     background: none;
     display: inline-flex;
     align-items: center;
-    align-content: center;
-    justify-content: center;
+    align-content: center;  
     user-select: none;
     cursor: pointer;
-    border-radius: var(--button-border-radius);
     gap: 5px;
 }
 
@@ -151,7 +146,6 @@ button span {
     font-size: var(--font-12);
     font-weight: 300;
     white-space: nowrap;
-    transition: color var(--transition-change-color-theme);
 }
 
 a {
@@ -173,43 +167,83 @@ a span {
     font-size: var(--font-12);
     font-weight: 300;
     white-space: nowrap;
-    transition: color var(--transition-change-color-theme);
 }
 
-
-
-
-
-.btn-primary {
+.btn {
     position: relative;
-    background-color: #3ea300;
     padding: 0.4rem 1rem;
     box-shadow: var(--button-box-shadow);
     transition: transform ease 100ms;
+    border-radius: var(--button-border-radius);
+    background-color: var(--btn-bg);
     z-index: 0;
 }
 
-.btn-primary::after {
+.btn span {
+    color: var(--btn-text, #222);
+}
+
+.btn::after {
     content: "";
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     width: 100%;
-    height: calc( 100% - 2px);
-    background-color: #02e615;
-    border-radius: var(--button-border-radius);
-    transition: height ease 100ms, background-color 100ms;
+    height: calc(100% - 2px);
+    background-color: var(--btn-bg-accent);
+    border-radius: inherit;
+    transition: height 100ms ease, background-color 100ms;
     z-index: -1;
-
-}
-.btn-primary:hover::after {
-    background-color: #57da00;
 }
 
-.btn-primary:active {
+.btn:hover::after {
+    background-color: var(--btn-bg-hover);
+}
+
+.btn:active {
     transform: translateY(2px);
 }
-.btn-primary:active::after {
-    height: 100% ;
+
+.btn:active::after {
+    height: 100%;
+}
+
+.btn-primary {
+    --btn-bg: #3ea300;
+    --btn-bg-accent: #02e615;
+    --btn-bg-hover: #57da00;
+    --btn-text: #222;
+}
+
+.btn-danger {
+    --btn-bg: #d32f2f;
+    --btn-bg-accent: #ff5252;
+    --btn-bg-hover: #e53935;
+    --btn-text: #fff;
+}
+
+.btn-info {
+    --btn-bg: #1976d2;
+    --btn-bg-accent: #42a5f5;
+    --btn-bg-hover: #1e88e5;
+    --btn-text: #fff;
+}
+
+.btn-secondary {
+    --btn-bg: #c4cad0;
+    --btn-bg-accent: #dce1e8;
+    --btn-bg-hover: #c0c6cd;
+    --btn-text: #000;
+}
+
+.btn-disabled {
+    --btn-bg: #d6d6d6;
+    --btn-bg-accent: #c2c2c2;
+    --btn-bg-hover: #d6d6d6;
+    --btn-text: #8a8a8a;
+    
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
 }

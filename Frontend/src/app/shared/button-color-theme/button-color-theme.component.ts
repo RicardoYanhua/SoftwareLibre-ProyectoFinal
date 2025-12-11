@@ -6,24 +6,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './button-color-theme.component.css'
 })
 export class ButtonColorThemeComponent implements OnInit {
-  
-  TemaSeleccionado: 'light' | 'dark' = 'light'; 
- 
+
+  TemaSeleccionado: 'light' | 'dark' = 'light';
+
   ngOnInit(): void {
+    this.inicializarTema();
+  }
 
-    const temaGuardado = localStorage.getItem('color-scheme');
-    if (temaGuardado === 'dark' || temaGuardado === 'light') {
-      this.TemaSeleccionado = temaGuardado;
+  inicializarTema() {
+    const guardado = localStorage.getItem('color-scheme');
+
+    if (guardado === 'dark' || guardado === 'light') {
+      this.TemaSeleccionado = guardado;
     } else {
-
-      const preferencia = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      this.TemaSeleccionado = preferencia;
+      const prefiereDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.TemaSeleccionado = prefiereDark ? 'dark' : 'light';
     }
 
     this.aplicarTema();
 
+    // Para transiciones suaves después de cargar
     setTimeout(() => {
-      document.body.classList.add('color-scheme-transition');
+      document.documentElement.classList.add('color-scheme-transition');
     });
   }
 
@@ -35,8 +39,12 @@ export class ButtonColorThemeComponent implements OnInit {
 
   aplicarTema() {
     const html = document.documentElement;
+
     html.classList.remove('color-scheme-light', 'color-scheme-dark');
-    html.classList.add('color-scheme-' + this.TemaSeleccionado);
+    html.classList.add(`color-scheme-${this.TemaSeleccionado}`);
+
+    // Esto activa el soporte nativo de colores del navegador
+    html.style.colorScheme = this.TemaSeleccionado;
   }
 
 }

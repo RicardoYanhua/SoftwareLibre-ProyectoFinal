@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -7,29 +8,25 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   imports: [
     RouterOutlet,
     CommonModule,
-    RouterLink
-
+    RouterLink,
+    MatIcon
   ],
   templateUrl: './app-router.component.html',
   styleUrl: './app-router.component.css'
 })
 export class AppRouterComponent {
-// estado del sidebar
-sidebarCollapsed = false;
+  sidebarCollapsed = false;
 
-constructor() {
-// Si quieres recordar el estado del sidebar entre recargas
-const saved = localStorage.getItem('sidebarCollapsed');
-if (saved !== null) {
-this.sidebarCollapsed = JSON.parse(saved);
-}
-}
+  ngOnInit() {
+    const saved = localStorage.getItem('sidebarCollapsed');
+    this.sidebarCollapsed = saved === 'true';
+  }
 
-toggleSidebar() {
-this.sidebarCollapsed = !this.sidebarCollapsed;
+  disableInitialTransition = true;
 
-// guarda el estado si deseas persistencia
-localStorage.setItem('sidebarCollapsed', JSON.stringify(this.sidebarCollapsed));
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+    localStorage.setItem('sidebarCollapsed', this.sidebarCollapsed.toString());
 
-}
+  }
 }
